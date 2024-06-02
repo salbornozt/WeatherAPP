@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
             WeatherAPPTheme {
                 // A surface container using the 'background' color from the theme
                 val navController = rememberNavController()
+
                 Scaffold(
                     bottomBar = { BottomNavigationBar(navController = navController) }
                 ) { innerPadding->

@@ -1,9 +1,9 @@
 package com.satdev.weatherapp.core.ui
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,9 +21,9 @@ fun BottomNavigationBar(navController: NavController) {
     )
     var selectedItem : ScreenDestinations by remember { mutableStateOf(ScreenDestinations.Home) }
 
-    BottomNavigation {
+    NavigationBar {
         items.forEach { screen ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = { Icon(imageVector = screen.icon, contentDescription = stringResource(id = screen.resourceId)) },
                 label = { Text(stringResource(id = screen.resourceId)) },
                 selected = selectedItem == screen,
