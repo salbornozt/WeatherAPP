@@ -16,9 +16,9 @@ val TempleDarkOnSurface = Color(0xFFFFFFFF)
 
 // Light Theme Colors
 val TempleLightPrimary = Color(0xFF008D75)
-val TempleLightSecondary = Color(0xFFEEEEEE)
+val TempleLightSecondary = Color(0xFFD9D9D9)
 val TempleLightTertiary = Color(0xFF616161)
-val TempleLightBackground = Color(0xFFFFFFFF)
+val TempleLightBackground = Color(0xFFD9D9D9)
 val TempleLightSurface = Color(0xFFFFFFFF)
 val TempleLightOnPrimary = Color(0xFF000000)
 val TempleLightOnSecondary = Color(0xFF000000)

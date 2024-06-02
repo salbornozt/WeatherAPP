@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">weatherAPP</string>
+    <string name="home_nav">Home</string>
+    <string name="forecast_nav">Forecast</string>
 </resources>
