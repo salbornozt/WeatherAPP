@@ -15,6 +15,11 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
@@ -43,15 +48,20 @@ class WeatherRepositoryImpl @Inject constructor(
                     weatherResult.errorWrapper ?: ErrorWrapper.UnknownError
                 )
             }
-
+            val weatherToday = filterTodayWeather(forecastResult.data ?: listOf())
             return@withContext ApiResult.Success(
                 HomeModel(
                     actualWeatherModel = weatherResult.data ?: WeatherModel(),
-                    nextWeatherList = forecastResult.data ?: listOf()
+                    nextWeatherList = weatherToday
                 )
             )
 
         }
+
+    private fun filterTodayWeather(list : List<WeatherItemModel>) :List<WeatherItemModel> {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        return list.filter { it.date.split(" ")[0] == today }
+    }
 
     private fun forecastApiResponseToWeatherItemModel(forecastApiResponse: ForecastApiResponse?): List<WeatherItemModel>? {
         return forecastApiResponse?.list?.map { forecastItem ->
