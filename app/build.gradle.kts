@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.play.services.location)
+    implementation(libs.accompanist.permissions)
+
 
 
 
