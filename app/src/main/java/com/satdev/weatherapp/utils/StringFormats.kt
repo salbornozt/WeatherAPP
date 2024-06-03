@@ -8,4 +8,6 @@ object StringFormats {
     fun Double.formatWindSpeed(unit: String = "mph"): String {
         return String.format("%.0f %s", this, unit)
     }
+
+
 }
