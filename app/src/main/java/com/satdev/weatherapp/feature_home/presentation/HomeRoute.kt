@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.satdev.weatherapp.core.ui.AppLoadingScreen
 
 @Composable
 fun HomeRoute(viewModel: HomeViewModel = hiltViewModel(), ) {
@@ -11,7 +12,7 @@ fun HomeRoute(viewModel: HomeViewModel = hiltViewModel(), ) {
 
     when(viewState.value){
         is HomeViewState.Loading ->{
-            HomeLoadingScreen()
+            AppLoadingScreen()
         }
         is HomeViewState.Error -> {
             Text(text = "Error")

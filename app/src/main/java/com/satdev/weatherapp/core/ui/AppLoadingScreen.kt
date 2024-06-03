@@ -1,4 +1,4 @@
-package com.satdev.weatherapp.feature_home.presentation
+package com.satdev.weatherapp.core.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.satdev.weatherapp.ui.theme.WeatherAPPTheme
 
 @Composable
-fun HomeLoadingScreen(modifier: Modifier = Modifier) {
+fun AppLoadingScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize()
@@ -31,7 +31,7 @@ fun HomeLoadingScreen(modifier: Modifier = Modifier) {
 fun HomeLoadingScreenPreview() {
     WeatherAPPTheme {
         Surface {
-            HomeLoadingScreen()
+            AppLoadingScreen()
         }
     }
 }
