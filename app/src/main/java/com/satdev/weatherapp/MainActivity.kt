@@ -12,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.satdev.weatherapp.core.ui.BottomNavigationBar
 import com.satdev.weatherapp.navigation.AppNavigation
 import com.satdev.weatherapp.ui.theme.WeatherAPPTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
