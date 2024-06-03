@@ -2,11 +2,12 @@ package com.satdev.weatherapp.feature_forecast.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -57,18 +58,15 @@ fun ForecastItem(modifier: Modifier = Modifier, forecastItem: ForecastItemModel)
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 8.dp, end = 2.dp, bottom = 10.dp)){
                 ForecastItemTemperature(
+                    modifier = Modifier.align(Alignment.CenterStart),
                     highTemp = forecastItem.highTemp,
                     lowTemp = forecastItem.lowTemp
                 )
-                ForecastItemWindSpeed(windModel = forecastItem.windModel)
+                ForecastItemWindSpeed(modifier = Modifier.align(Alignment.Center), windModel = forecastItem.windModel)
                 ForecastItemIconDescription(
+                    modifier = Modifier.align(Alignment.CenterEnd),
                     description = forecastItem.weatherDescription,
                     iconId = forecastItem.iconId
                 )
@@ -125,7 +123,7 @@ fun ForecastItemIconDescription(
 ) {
     val iconUrl = "$IMAGE_BASE_URL$iconId@2x.png"
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        AsyncImage(model = iconUrl, contentDescription = "weather icon")
+        AsyncImage(model = iconUrl, contentDescription = "weather icon", modifier = Modifier.size(50.dp))
         Text(
             text = description,
             style = MaterialTheme.typography.bodySmall,
@@ -139,7 +137,7 @@ fun ForecastItemIconDescription(
 fun ForecastScreenPreview() {
     WeatherAPPTheme {
         Surface {
-            ForecastScreen(forecastList = listOf())
+            ForecastScreen(forecastList = listOf(ForecastItemModel()))
         }
     }
 }
