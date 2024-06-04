@@ -128,7 +128,7 @@ class WeatherRepositoryImplTest {
             )
         val ACTUAL_WEATHER = WeatherModel(
             cityName = WEATHER_API_RESPONSE.name,
-            mainWeather = WEATHER_API_RESPONSE.weather.first().description,
+            mainWeather = WEATHER_API_RESPONSE.weather.first().main,
             feelsLike = WEATHER_API_RESPONSE.main.feelsLike,
             highTemp = WEATHER_API_RESPONSE.main.maximumTemperature,
             lowTemp = WEATHER_API_RESPONSE.main.minimumTemperature,
