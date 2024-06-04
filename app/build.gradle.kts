@@ -90,6 +90,12 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.accompanist.swiperefresh)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+
+
 
 
 

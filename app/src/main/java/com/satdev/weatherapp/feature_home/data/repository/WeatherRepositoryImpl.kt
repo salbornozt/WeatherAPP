@@ -16,8 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -45,7 +43,7 @@ class WeatherRepositoryImpl @Inject constructor(
             }
             if (forecastResult is ApiResult.Error) {
                 return@withContext ApiResult.Error(
-                    weatherResult.errorWrapper ?: ErrorWrapper.UnknownError
+                    forecastResult.errorWrapper ?: ErrorWrapper.UnknownError
                 )
             }
             val weatherToday = filterTodayWeather(forecastResult.data ?: listOf())

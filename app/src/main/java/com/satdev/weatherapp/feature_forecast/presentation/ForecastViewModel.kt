@@ -30,6 +30,9 @@ class ForecastViewModel @Inject constructor(
     val refreshState: StateFlow<Boolean> = _refreshState.asStateFlow()
 
     init {
+        initialize()
+    }
+    fun initialize(){
         viewModelScope.launch {
             checkLocationAndForecast()
         }
