@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.satdev.weatherapp.PermissionState
-import com.satdev.weatherapp.PermissionViewModel
+import com.satdev.weatherapp.core.presentation.PermissionState
+import com.satdev.weatherapp.core.presentation.PermissionViewModel
 import com.satdev.weatherapp.core.ui.AppErrorScreen
 import com.satdev.weatherapp.core.ui.AppLoadingScreen
 import com.satdev.weatherapp.core.ui.LocationPermissionRationaleScreen

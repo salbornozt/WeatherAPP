@@ -32,6 +32,10 @@ class HomeViewModel @Inject constructor(
     val refreshState: StateFlow<Boolean> = _refreshState.asStateFlow()
 
     init {
+        initialize()
+    }
+
+    fun initialize(){
         viewModelScope.launch {
             checkLocationPermissionAndFetchData()
         }
@@ -89,7 +93,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onPermissionGranted() {
-        Log.d("sat_tag", "onPermissionGranted: ")
         viewModelScope.launch {
             homeViewState.value = HomeViewState.Loading
             checkLocationPermissionAndFetchData()
