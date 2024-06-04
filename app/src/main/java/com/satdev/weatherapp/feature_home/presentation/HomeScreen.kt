@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.satdev.weatherapp.R
 import com.satdev.weatherapp.core.api.IMAGE_BASE_URL
+import com.satdev.weatherapp.core.ui.PullToRefreshScreen
 import com.satdev.weatherapp.feature_home.domain.model.HomeModel
 import com.satdev.weatherapp.feature_home.domain.model.WeatherItemModel
 import com.satdev.weatherapp.feature_home.domain.model.WeatherModel
@@ -40,16 +41,21 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, homeViewState: HomeModel) {
-    Column(
-        modifier = modifier
+fun HomeScreen(modifier: Modifier = Modifier, homeViewState: HomeModel, isRefreshing:Boolean, onRefresh: () -> Unit,) {
+    PullToRefreshScreen(refreshing = isRefreshing, onRefresh = onRefresh) {
+        LazyColumn(modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp, start = 2.dp, end = 2.dp)
-    ) {
-
-        HomeHeader(weatherModel = homeViewState.actualWeatherModel)
-        Spacer(modifier = Modifier.height(32.dp))
-        HomeWeatherList(weatherList = homeViewState.nextWeatherList)
+            .padding(top = 16.dp, start = 2.dp, end = 2.dp)) {
+            item {
+                HomeHeader(weatherModel = homeViewState.actualWeatherModel)
+            }
+            item {
+                Spacer(modifier = Modifier.height(27.dp))
+            }
+            items(homeViewState.nextWeatherList) { item ->
+                HomeWeatherItem(weatherModel = item)
+            }
+        }
     }
 }
 
@@ -78,19 +84,6 @@ fun HomeHeader(modifier: Modifier = Modifier, weatherModel: WeatherModel) {
     }
 }
 
-@Composable
-fun HomeWeatherList(modifier: Modifier = Modifier, weatherList: List<WeatherItemModel>) {
-
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        items(weatherList) { item ->
-            HomeWeatherItem(weatherModel = item)
-        }
-    }
-}
 
 @Composable
 fun HomeWeatherItem(modifier: Modifier = Modifier, weatherModel: WeatherItemModel) {
@@ -101,7 +94,7 @@ fun HomeWeatherItem(modifier: Modifier = Modifier, weatherModel: WeatherItemMode
         outputFormat.format(date) // Format as desired (e.g., "HH:mm")
     }
     Card(
-        modifier = modifier
+        modifier = modifier.padding(top = 5.dp)
             .fillMaxWidth()
             .height(60.dp),
         shape = RectangleShape
@@ -149,7 +142,7 @@ fun ItemWeatherTemperature(modifier: Modifier = Modifier, temperature: String, i
 fun HomeScreenPreview() {
     WeatherAPPTheme {
         Surface {
-            HomeScreen(homeViewState = HomeModel())
+            HomeScreen(homeViewState = HomeModel(), isRefreshing = false, onRefresh = {})
         }
     }
 }

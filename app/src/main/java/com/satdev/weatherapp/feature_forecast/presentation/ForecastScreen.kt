@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.satdev.weatherapp.R
 import com.satdev.weatherapp.core.api.IMAGE_BASE_URL
+import com.satdev.weatherapp.core.ui.PullToRefreshScreen
 import com.satdev.weatherapp.feature_forecast.domain.model.ForecastItemModel
 import com.satdev.weatherapp.feature_home.domain.model.WeatherWindModel
 import com.satdev.weatherapp.feature_home.domain.model.getWindDirection
@@ -38,14 +39,15 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun ForecastScreen(modifier: Modifier = Modifier, forecastList: List<ForecastItemModel>) {
-
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        items(forecastList) { forecastItem ->
-            ForecastItem(forecastItem = forecastItem)
+fun ForecastScreen(modifier: Modifier = Modifier, forecastList: List<ForecastItemModel>, isRefreshing:Boolean, onRefresh: () -> Unit,) {
+    PullToRefreshScreen(refreshing = isRefreshing, onRefresh = onRefresh) {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            items(forecastList) { forecastItem ->
+                ForecastItem(forecastItem = forecastItem)
+            }
         }
     }
 }
@@ -72,7 +74,9 @@ fun ForecastItem(modifier: Modifier = Modifier, forecastItem: ForecastItemModel)
                 style = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp),
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 2.dp, bottom = 10.dp)){
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 2.dp, bottom = 10.dp)){
                 ForecastItemTemperature(
                     modifier = Modifier.align(Alignment.CenterStart),
                     highTemp = forecastItem.highTemp,
@@ -94,13 +98,13 @@ fun ForecastItem(modifier: Modifier = Modifier, forecastItem: ForecastItemModel)
 fun ForecastItemTemperature(modifier: Modifier = Modifier, highTemp: Double, lowTemp: Double) {
     Column(modifier) {
         Text(
-            text = "Hi temp : ${highTemp.formatTemperature()}",
+            text = stringResource(R.string.hi_temp, highTemp.formatTemperature()),
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 13.sp, fontWeight = FontWeight.Normal),
             color = MaterialTheme.colorScheme.onPrimary
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = "Low Temp : ${lowTemp.formatTemperature()}",
+            text = stringResource(R.string.low_temp, lowTemp.formatTemperature()),
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 13.sp, fontWeight = FontWeight.Normal),
             color = MaterialTheme.colorScheme.onPrimary
         )
@@ -151,7 +155,7 @@ fun ForecastItemIconDescription(
 fun ForecastScreenPreview() {
     WeatherAPPTheme {
         Surface {
-            ForecastScreen(forecastList = listOf(ForecastItemModel(date = "2024-06-02")))
+            ForecastScreen(forecastList = listOf(ForecastItemModel(date = "2024-06-02")), isRefreshing = false, onRefresh = {})
         }
     }
 }

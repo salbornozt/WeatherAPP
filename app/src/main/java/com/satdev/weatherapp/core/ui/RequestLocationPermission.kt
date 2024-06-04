@@ -1,6 +1,7 @@
 package com.satdev.weatherapp.core.ui
 
 import android.Manifest
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -33,6 +34,7 @@ fun RequestLocationPermission(
             permissionState.launchMultiplePermissionRequest()
         }
     }
+    Log.d("sat_tag", "RequestLocationPermission: state")
 
     if (allPermissionsRevoked) {
         if (permissionState.shouldShowRationale){
@@ -42,6 +44,7 @@ fun RequestLocationPermission(
         }
     } else {
         if (permissionState.allPermissionsGranted) {
+            Log.d("sat_tag", "RequestLocationPermission: garantt")
             onPermissionGranted()
         } else {
 

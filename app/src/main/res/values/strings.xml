@@ -13,4 +13,6 @@
     <string name="error_fetching_forecast">We encountered an issue while fetching forecast information. Please try again in a few moments.</string>
     <string name="feels_like">Feels like: %1$s</string>
     <string name="weather_symbol">F</string>
+    <string name="hi_temp">Hi temp : %1$s</string>
+    <string name="low_temp">Low Temp : %1$s</string>
 </resources>

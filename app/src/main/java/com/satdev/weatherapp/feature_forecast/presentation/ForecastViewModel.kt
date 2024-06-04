@@ -9,7 +9,6 @@ import com.satdev.weatherapp.core.wrapper.ApiResult
 import com.satdev.weatherapp.core.wrapper.ErrorWrapper
 import com.satdev.weatherapp.feature_forecast.domain.ForecastRepository
 import com.satdev.weatherapp.feature_forecast.domain.model.ForecastItemModel
-import com.satdev.weatherapp.feature_home.domain.model.HomeModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,19 +26,27 @@ class ForecastViewModel @Inject constructor(
         MutableStateFlow(ForecastViewState.Loading)
     val viewState: StateFlow<ForecastViewState> = forecastViewState.asStateFlow()
 
+    private val _refreshState = MutableStateFlow(false)
+    val refreshState: StateFlow<Boolean> = _refreshState.asStateFlow()
+
     init {
         viewModelScope.launch {
-            checkLocationAndFetchForecast()
+            checkLocationAndForecast()
         }
     }
+    fun onRefresh() = viewModelScope.launch {
+        _refreshState.value = true
+        checkLocationAndForecast()
+        _refreshState.value = false
+    }
 
-    fun checkLocationAndFetchForecast() = viewModelScope.launch {
-        forecastViewState.value = ForecastViewState.Loading
+
+
+    private suspend fun checkLocationAndForecast(){
         when (val result = locationRepository.getCurrentLocation()) {
             is ApiResult.Error -> {
                 handleLocationError(result.errorWrapper ?: ErrorWrapper.UnknownError)
             }
-
             is ApiResult.Success -> {
                 result.data?.let { pairResult ->
                     fetchForecastData(pairResult.first, pairResult.second)
@@ -47,7 +54,7 @@ class ForecastViewModel @Inject constructor(
             }
         }
     }
-
+    
     private suspend fun fetchForecastData(latitude: Double, longitude: Double) {
         val result = forecastRepository.getForecastList(latitude.toString(), longitude.toString())
         when (result) {
@@ -56,7 +63,7 @@ class ForecastViewModel @Inject constructor(
             }
             is ApiResult.Success -> {
                 result.data?.let {
-                    forecastViewState.value = ForecastViewState.Success(forecastData = it, false)
+                    forecastViewState.value = ForecastViewState.Success(forecastData = it)
                 }
             }
         }
@@ -74,13 +81,20 @@ class ForecastViewModel @Inject constructor(
             }
         }
     }
+
+    fun onPermissionGranted() {
+        viewModelScope.launch {
+            forecastViewState.value = ForecastViewState.Loading
+            checkLocationAndForecast()
+        }
+    }
 }
 
 sealed class ForecastViewState {
     data object Loading : ForecastViewState()
     data class Error(val error: String) : ForecastViewState()
 
-    data class Success(val forecastData: List<ForecastItemModel>, val isRefreshing: Boolean) :
+    data class Success(val forecastData: List<ForecastItemModel>) :
         ForecastViewState()
 
     data class RequestPermission(val defaultData: List<ForecastItemModel>) : ForecastViewState()
