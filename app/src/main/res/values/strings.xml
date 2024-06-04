@@ -15,4 +15,5 @@
     <string name="weather_symbol">F</string>
     <string name="hi_temp">Hi temp : %1$s</string>
     <string name="low_temp">Low Temp : %1$s</string>
+    <string name="unit_parameter">imperial</string>
 </resources>

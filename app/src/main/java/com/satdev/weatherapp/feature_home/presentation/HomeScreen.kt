@@ -38,6 +38,7 @@ import com.satdev.weatherapp.ui.theme.WeatherAPPTheme
 import com.satdev.weatherapp.utils.StringFormats.formatTemperature
 import com.satdev.weatherapp.utils.StringFormats.formatWindSpeed
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 @Composable
@@ -90,8 +91,8 @@ fun HomeWeatherItem(modifier: Modifier = Modifier, weatherModel: WeatherItemMode
     val formattedTime = remember(weatherModel.date) {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val outputFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
-        val date = inputFormat.parse(weatherModel.date) // Parse input date string
-        outputFormat.format(date) // Format as desired (e.g., "HH:mm")
+        val date = inputFormat.parse(weatherModel.date) ?: Date()
+        outputFormat.format(date)
     }
     Card(
         modifier = modifier.padding(top = 5.dp)

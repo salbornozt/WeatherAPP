@@ -1,3 +1,4 @@
+
 pluginManagement {
     repositories {
         google {
@@ -18,6 +19,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
 rootProject.name = "weatherAPP"
 include(":app")

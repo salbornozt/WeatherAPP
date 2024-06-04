@@ -22,10 +22,10 @@ import javax.inject.Singleton
 object AppModule {
     @Singleton
     @Provides
-    fun providesRetrofitClient(): OkHttpClient {
+    fun providesRetrofitClient(stringRepository: StringRepository): OkHttpClient {
         return OkHttpClient.Builder().connectTimeout(300, TimeUnit.SECONDS)
             .readTimeout(300, TimeUnit.SECONDS)
-            .addInterceptor(AppInterceptor()).build()
+            .addInterceptor(AppInterceptor(stringRepository)).build()
     }
 
     @Singleton
