@@ -24,7 +24,7 @@ data class WeatherApiResponse(
     @SerializedName("wind") val wind: Wind
 )
 
-fun weatherApiResponseToWeatherModel(weatherApiResponse: WeatherApiResponse?) : WeatherModel? {
+fun weatherApiResponseToWeatherModel(weatherApiResponse: WeatherApiResponse?) : WeatherModel {
     return WeatherModel(
         cityName = weatherApiResponse?.name ?: "",
         mainWeather = weatherApiResponse?.weather?.first()?.description ?: "",

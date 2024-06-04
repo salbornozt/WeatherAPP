@@ -32,7 +32,7 @@ class LocationRepositoryImpl constructor(
                 // If location is not null, invoke the success callback with latitude and longitude
                 continuation.resume(ApiResult.Success(Pair(it.latitude, it.longitude)))
             }
-        }.addOnFailureListener { exception ->
+        }.addOnFailureListener { _ ->
             // If an error occurs, invoke the failure callback with the exception
             val result : ApiResult<Pair<Double,Double>> = ApiResult.Error(ErrorWrapper.ErrorGettingLocation)
             continuation.resume(result)

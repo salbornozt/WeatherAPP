@@ -75,7 +75,7 @@ class ForecastViewModel @Inject constructor(
                 ForecastViewState.Error(stringRepository.getString(R.string.error_getting_locations))
 
             ErrorWrapper.NoLocationPermission -> forecastViewState.value =
-                ForecastViewState.RequestPermission(listOf())
+                ForecastViewState.RequestPermission
             else -> {
                 forecastViewState.value = ForecastViewState.Error(stringRepository.getString(R.string.unknown_error))
             }
@@ -97,5 +97,5 @@ sealed class ForecastViewState {
     data class Success(val forecastData: List<ForecastItemModel>) :
         ForecastViewState()
 
-    data class RequestPermission(val defaultData: List<ForecastItemModel>) : ForecastViewState()
+    data object RequestPermission : ForecastViewState()
 }

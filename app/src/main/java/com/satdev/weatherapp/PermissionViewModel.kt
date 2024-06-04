@@ -9,10 +9,6 @@ class PermissionViewModel : ViewModel(){
     private val _permissionState :MutableStateFlow<PermissionState> = MutableStateFlow(PermissionState.Unknown)
     val permissionState: StateFlow<PermissionState> = _permissionState.asStateFlow()
 
-    fun onPermissionGranted() {
-        _permissionState.value = PermissionState.Granted
-    }
-
     fun onPermissionDenied() {
         _permissionState.value = PermissionState.Denied
     }
@@ -24,9 +20,7 @@ class PermissionViewModel : ViewModel(){
 }
 
 sealed class PermissionState {
-    object Unknown : PermissionState()
-    object Granted : PermissionState()
-    object Denied : PermissionState()
-
-    object ShouldShowRationale : PermissionState()
+    data object Unknown : PermissionState()
+    data object Denied : PermissionState()
+    data object ShouldShowRationale : PermissionState()
 }

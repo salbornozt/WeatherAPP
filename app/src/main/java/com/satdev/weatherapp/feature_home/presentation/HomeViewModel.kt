@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
                 HomeViewState.Error(stringRepository.getString(R.string.error_getting_locations))
 
             ErrorWrapper.NoLocationPermission -> homeViewState.value =
-                HomeViewState.RequestPermission(HomeModel())
+                HomeViewState.RequestPermission
 
             else -> {
                 homeViewState.value =
@@ -82,7 +82,7 @@ class HomeViewModel @Inject constructor(
 
             is ApiResult.Success -> {
                 result.data?.let {
-                    homeViewState.value = HomeViewState.Success(it, false)
+                    homeViewState.value = HomeViewState.Success(it)
                 }
             }
         }
@@ -100,7 +100,7 @@ class HomeViewModel @Inject constructor(
 
 sealed class HomeViewState {
     data object Loading : HomeViewState()
-    data class Success(val weatherData: HomeModel, val isRefreshing: Boolean) : HomeViewState()
-    data class RequestPermission(val defaultData: HomeModel) : HomeViewState()
+    data class Success(val weatherData: HomeModel) : HomeViewState()
+    data object RequestPermission : HomeViewState()
     data class Error(val message: String) : HomeViewState()
 }
