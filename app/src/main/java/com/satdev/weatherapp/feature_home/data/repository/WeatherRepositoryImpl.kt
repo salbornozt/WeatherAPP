@@ -45,7 +45,7 @@ class WeatherRepositoryImpl @Inject constructor(
             }
             if (forecastResult is ApiResult.Error) {
                 return@withContext ApiResult.Error(
-                    weatherResult.errorWrapper ?: ErrorWrapper.UnknownError
+                    forecastResult.errorWrapper ?: ErrorWrapper.UnknownError
                 )
             }
             val weatherToday = filterTodayWeather(forecastResult.data ?: listOf())
