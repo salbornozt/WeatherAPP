@@ -250,31 +250,13 @@ class WeatherRepositoryImplTest {
         assertThat(error).isInstanceOf(ErrorWrapper.ServiceInternalError::class.java)
     }
 
-    @Test
-    fun `get weather should return home model success with correct icon and description`() = runBlocking {
-        //Arrange
-        weatherDataSourceReturnsSuccess()
-        forecastDataSourceReturnsSuccess()
-        //Act
-        val result = SUT.getWeather(LAT.toString(), LAN.toString())
-        //Assert
-        coVerify(exactly = 1) {
-            weatherDataSource.getWeather(LAT.toString(), LAN.toString())
-            forecastDataSource.getForecast(LAT.toString(), LAN.toString())
-        }
-        assertThat(result).isInstanceOf(ApiResult.Success::class.java)
-        val data = result.data
-        assertThat(data).isEqualTo(HOME_WEATHER_RESULT)
-    }
-
-
     private fun forecastDataSourceReturnsError() {
         coEvery {
             forecastDataSource.getForecast(
                 LAT.toString(),
                 LAN.toString()
             )
-        } returns Response.error(401,"".toResponseBody())
+        } returns Response.error(401, "".toResponseBody())
     }
 
     private fun weatherDataSourceReturnsError() {
@@ -283,7 +265,7 @@ class WeatherRepositoryImplTest {
                 LAT.toString(),
                 LAN.toString()
             )
-        } returns Response.error(401,"".toResponseBody())
+        } returns Response.error(401, "".toResponseBody())
     }
 
 

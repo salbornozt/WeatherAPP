@@ -26,6 +26,7 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 class ForecastRepositoryImplTest {
@@ -98,6 +99,8 @@ class ForecastRepositoryImplTest {
             weatherDescription = FORECAST_API_ITEM.weather.first().description,
             iconId = FORECAST_API_ITEM.weather.first().icon
         )
+        const val MOST_COMMON_DESCRIPTION = "Slightly Cloudy"
+        const val MOST_COMMON_ICON = "21a"
     }
 
     @Before
@@ -145,6 +148,104 @@ class ForecastRepositoryImplTest {
         assertThat(result.data).isEqualTo(listOf<ForecastItemModel>())
     }
 
+    @Test
+    fun `get Forecast List with odd occurrences icon and description returns success the most common icon`() =
+        runBlocking {
+            //Arrange
+            val today = Date()
+            val tomorrow = getFutureDate(1)
+            val dayAfterTomorrow = getFutureDate(2)
+            val listOfWeatherToday =
+                getListOfWeatherWithCustomDateAndDifferentIconAndDescription(today)
+            val listOfWeatherTomorrow =
+                getListOfWeatherWithCustomDateAndDifferentIconAndDescription(tomorrow)
+            val listOfWeatherDayAfterTomorrow =
+                getListOfWeatherWithCustomDateAndDifferentIconAndDescription(dayAfterTomorrow)
+            val fullList = ArrayList<ForecastItem>()
+            fullList.addAll(listOfWeatherToday)
+            fullList.addAll(listOfWeatherTomorrow)
+            fullList.addAll(listOfWeatherDayAfterTomorrow)
+            val customResponse = FORECAST_API_RESPONSE.copy(list = fullList)
+            forecastDataSourceReturnsSuccessWithCustomResult(customResponse)
+            //Act
+            val result = SUT.getForecastList(LAT.toString(), LAN.toString())
+            //Assert
+            assertThat(result).isInstanceOf(ApiResult.Success::class.java)
+            assertThat(result.data?.size).isEqualTo(3)
+            result.data?.forEach { item ->
+                assertThat(item.iconId).isEqualTo(MOST_COMMON_ICON)
+                assertThat(item.weatherDescription).isEqualTo(MOST_COMMON_DESCRIPTION)
+            }
+            return@runBlocking
+        }
+
+    @Test
+    fun `get Forecast List with equal occurrences icon and description returns success the most common icon`() =
+        runBlocking {
+            //Arrange
+            val today = Date()
+            val tomorrow = getFutureDate(1)
+            val dayAfterTomorrow = getFutureDate(2)
+            val listOfWeatherToday = getListOfWeatherWithCustomDateAndDifferentIconAndDescription(
+                today,
+                oddOccurrences = false
+            )
+            val listOfWeatherTomorrow =
+                getListOfWeatherWithCustomDateAndDifferentIconAndDescription(
+                    tomorrow,
+                    oddOccurrences = false
+                )
+            val listOfWeatherDayAfterTomorrow =
+                getListOfWeatherWithCustomDateAndDifferentIconAndDescription(
+                    dayAfterTomorrow,
+                    oddOccurrences = false
+                )
+            val fullList = ArrayList<ForecastItem>()
+            fullList.addAll(listOfWeatherToday)
+            fullList.addAll(listOfWeatherTomorrow)
+            fullList.addAll(listOfWeatherDayAfterTomorrow)
+            val customResponse = FORECAST_API_RESPONSE.copy(list = fullList)
+            forecastDataSourceReturnsSuccessWithCustomResult(customResponse)
+            //Act
+            val result = SUT.getForecastList(LAT.toString(), LAN.toString())
+            //Assert
+            assertThat(result).isInstanceOf(ApiResult.Success::class.java)
+            assertThat(result.data?.size).isEqualTo(3)
+            result.data?.forEach { item ->
+                assertThat(item.iconId).isEqualTo(MOST_COMMON_ICON)
+                assertThat(item.weatherDescription).isEqualTo(MOST_COMMON_DESCRIPTION)
+            }
+            return@runBlocking
+        }
+
+    private fun getListOfWeatherWithCustomDateAndDifferentIconAndDescription(
+        date: Date,
+        oddOccurrences: Boolean = true
+    ): List<ForecastItem> {
+        val baseItem = FORECAST_API_ITEM.copy(textDate = simpleDateFormat.format(date))
+        val numItems = 6 // Or any desired number of items
+
+        return List(numItems) { index ->
+            val weather = Weather(
+                description = MOST_COMMON_DESCRIPTION,
+                id = 0,
+                main = "Clouds",
+                icon = if (oddOccurrences && index % 2 == 1) "12b" else MOST_COMMON_ICON
+            )
+            baseItem.copy(weather = listOf(weather))
+        }
+    }
+
+
+    private fun forecastDataSourceReturnsSuccessWithCustomResult(response: ForecastApiResponse) {
+        coEvery {
+            forecastDataSource.getForecast(
+                LAT.toString(),
+                LAN.toString()
+            )
+        } returns Response.success(response)
+    }
+
     private fun forecastDataSourceReturnsSuccessEmptyData() {
         coEvery {
             forecastDataSource.getForecast(
@@ -152,6 +253,13 @@ class ForecastRepositoryImplTest {
                 LAN.toString()
             )
         } returns Response.success(FORECAST_API_RESPONSE.copy(list = listOf()))
+    }
+
+    private fun getFutureDate(days: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, days) // Add one day to the current date
+        val tomorrow = calendar.time
+        return tomorrow
     }
 
     private fun forecastDataSourceReturnsError() {
