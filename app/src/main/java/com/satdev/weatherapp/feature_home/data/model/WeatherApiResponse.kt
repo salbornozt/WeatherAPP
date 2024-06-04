@@ -24,10 +24,10 @@ data class WeatherApiResponse(
     @SerializedName("wind") val wind: Wind
 )
 
-fun weatherApiResponseToWeatherModel(weatherApiResponse: WeatherApiResponse?) : WeatherModel? {
+fun weatherApiResponseToWeatherModel(weatherApiResponse: WeatherApiResponse?) : WeatherModel {
     return WeatherModel(
         cityName = weatherApiResponse?.name ?: "",
-        mainWeather = weatherApiResponse?.weather?.first()?.main ?: "",
+        mainWeather = weatherApiResponse?.weather?.first()?.description ?: "",
         feelsLike = weatherApiResponse?.main?.feelsLike ?: 0.0,
         highTemp = weatherApiResponse?.main?.maximumTemperature ?: 0.0,
         lowTemp = weatherApiResponse?.main?.minimumTemperature ?: 0.0,

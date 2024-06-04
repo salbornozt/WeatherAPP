@@ -3,4 +3,17 @@
     <string name="home_nav">Home</string>
     <string name="forecast_nav">Forecast</string>
     <string name="wind_speed">Wind Speed</string>
+    <string name="this_app_needs_access_to_your_location">This app needs access to your location to provide accurate weather forecasts based on your current location. Without this permission, the app cannot function properly.</string>
+    <string name="go_to_app_settings">Go to App Settings</string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="error_getting_locations">Error Getting Device Location</string>
+    <string name="unknown_error">An Unknown Error Occurred</string>
+    <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
+    <string name="error_fetching_weather">We encountered an issue while fetching weather information. Please try again in a few moments.</string>
+    <string name="error_fetching_forecast">We encountered an issue while fetching forecast information. Please try again in a few moments.</string>
+    <string name="feels_like">Feels like: %1$s</string>
+    <string name="weather_symbol">F</string>
+    <string name="hi_temp">Hi temp : %1$s</string>
+    <string name="low_temp">Low Temp : %1$s</string>
+    <string name="unit_parameter">imperial</string>
 </resources>

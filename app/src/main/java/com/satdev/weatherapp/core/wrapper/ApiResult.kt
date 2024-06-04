@@ -18,11 +18,14 @@ fun <T, R> Response<T>.toApiResult(mapper: (T?) -> R?) : ApiResult<R?> {
     }
 }
 
-sealed class ErrorWrapper(val errorMessage: String?,
-                          val statusCode: Int? = null) {
+sealed class ErrorWrapper() {
 
-    data class ServiceInternalError(val statusCodeError: Int, val resultErrorMessage: String) : ErrorWrapper(resultErrorMessage,statusCode = statusCodeError)
+    data class ServiceInternalError(val statusCodeError: Int, val resultErrorMessage: String) : ErrorWrapper()
 
-    data object UnknownError : ErrorWrapper("Unknown Error")
+    data object UnknownError : ErrorWrapper()
+
+    data object NoLocationPermission : ErrorWrapper()
+
+    data object ErrorGettingLocation : ErrorWrapper()
 
 }
